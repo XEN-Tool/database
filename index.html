@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>XEN Database Explorer</title>
+<title>XEN Database</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
@@ -11,7 +11,7 @@
   :root{
     --bg:#f1f1f1; --bg2:#ffffff; --card:#ffffff; --border:#dcdcdc;
     --text:#121212; --muted:#6a6a6a; --accent:#2b2b2b; --accent2:#6e6e6e; --onaccent:#ffffff;
-    --danger:#ff5c7a; --radius:16px;
+    --radius:16px;
     box-sizing:border-box;
     padding-top:env(safe-area-inset-top,0px);
     padding-bottom:env(safe-area-inset-bottom,0px);
@@ -32,8 +32,8 @@
     margin:0; background:var(--bg); color:var(--text);
     font-family:'Inter',system-ui,-apple-system,Segoe UI,sans-serif;
     background-image:
-      radial-gradient(circle at 15% 0%, color-mix(in srgb, var(--accent) 18%, transparent), transparent 55%),
-      radial-gradient(circle at 85% 20%, color-mix(in srgb, var(--accent2) 14%, transparent), transparent 50%);
+      radial-gradient(circle at 15% 0%, color-mix(in srgb, var(--accent) 14%, transparent), transparent 55%),
+      radial-gradient(circle at 85% 20%, color-mix(in srgb, var(--accent2) 10%, transparent), transparent 50%);
     min-height:100%;
   }
   h1,h2,h3{font-family:'Space Grotesk',sans-serif; margin:0;}
@@ -50,30 +50,35 @@
   .hero .accent{background:linear-gradient(135deg,var(--accent),var(--accent2)); -webkit-background-clip:text; background-clip:text; color:transparent;}
   .hero p{color:var(--muted); max-width:560px; margin:16px auto 28px; font-size:16px; line-height:1.6;}
   .hero-actions{display:flex; gap:12px; justify-content:center; flex-wrap:wrap;}
-  .how{display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:16px; margin:50px 0;}
+  .how{display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:16px; margin:50px 0 20px;}
   .how .card{background:var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:20px;}
   .how .num{width:30px;height:30px;border-radius:9px;background:color-mix(in srgb, var(--accent) 18%, transparent); color:var(--accent); display:flex; align-items:center; justify-content:center; font-weight:700; font-family:'Space Grotesk'; margin-bottom:12px;}
   .how h3{font-size:15px; margin-bottom:6px;}
   .how p{color:var(--muted); font-size:14px; line-height:1.5; margin:0;}
-  section.panel{background:var(--card); border:1px solid var(--border); border-radius:20px; padding:24px; margin-bottom:60px;}
-  .panel-head{display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; margin-bottom:18px;}
-  .panel-head h2{font-size:20px;}
-  .panel-head span{color:var(--muted); font-size:13px;}
-  .tabs{display:flex; gap:8px; flex-wrap:wrap; border-bottom:1px solid var(--border); padding-bottom:14px; margin-bottom:18px;}
-  .tab{padding:8px 16px; border-radius:999px; border:1px solid var(--border); background:transparent; color:var(--muted); font-weight:600; font-size:13px; cursor:pointer; font-family:inherit;}
-  .tab.active{background:linear-gradient(135deg,var(--accent),var(--accent2)); color:#0a0b10; border-color:transparent;}
-  .stats-row{display:grid; grid-template-columns:repeat(auto-fit,minmax(130px,1fr)); gap:10px; margin-bottom:18px;}
-  .stat{background:var(--bg2); border:1px solid var(--border); border-radius:12px; padding:14px;}
-  .stat .v{font-family:'Space Grotesk'; font-size:20px; font-weight:700;}
-  .stat .l{color:var(--muted); font-size:12px; margin-top:2px;}
-  .file-row{display:flex; align-items:center; justify-content:space-between; gap:12px; padding:14px; border:1px solid var(--border); border-radius:12px; margin-bottom:10px; flex-wrap:wrap;}
-  .file-left{display:flex; align-items:center; gap:12px;}
-  .file-icon{width:36px;height:36px;border-radius:10px;background:color-mix(in srgb, var(--accent2) 16%, transparent); display:flex; align-items:center; justify-content:center; font-size:16px;}
-  .file-name{font-weight:600; font-size:14px;}
-  .file-meta{color:var(--muted); font-size:12px; margin-top:2px;}
-  .dl{padding:8px 14px; border-radius:999px; background:var(--bg2); border:1px solid var(--border); color:var(--text); font-size:13px; font-weight:600; text-decoration:none;}
-  .empty{text-align:center; color:var(--muted); padding:30px 10px; font-size:14px;}
-  footer{text-align:center; padding:30px 0 60px; color:var(--muted); font-size:13px;}
+
+  .features{margin:60px 0; text-align:center;}
+  .features h2{font-size:26px; margin-bottom:8px;}
+  .features .sub{color:var(--muted); font-size:15px; margin-bottom:28px;}
+  .features-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:14px; text-align:left;}
+  .feat{background:var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:18px;}
+  .feat .emoji{font-size:22px; margin-bottom:10px; display:block;}
+  .feat h3{font-size:14px; margin-bottom:6px;}
+  .feat p{color:var(--muted); font-size:13px; line-height:1.5; margin:0;}
+
+  .cta{background:var(--card); border:1px solid var(--border); border-radius:20px; padding:34px 24px; text-align:center; margin:50px 0;}
+  .cta h2{font-size:22px; margin-bottom:8px;}
+  .cta p{color:var(--muted); font-size:14px; margin:0 0 20px;}
+
+  .faq{margin:50px 0 70px;}
+  .faq h2{font-size:22px; text-align:center; margin-bottom:22px;}
+  .faq-item{background:var(--card); border:1px solid var(--border); border-radius:12px; margin-bottom:10px; overflow:hidden;}
+  .faq-q{padding:16px 18px; display:flex; align-items:center; justify-content:space-between; cursor:pointer; font-weight:600; font-size:14px;}
+  .faq-q .chev{color:var(--muted); transition:transform .2s ease; flex-shrink:0; margin-left:12px;}
+  .faq-item.open .faq-q .chev{transform:rotate(180deg);}
+  .faq-a{max-height:0; overflow:hidden; transition:max-height .25s ease;}
+  .faq-a p{color:var(--muted); font-size:13px; line-height:1.6; padding:0 18px 16px; margin:0;}
+
+  footer{text-align:center; padding:20px 0 60px; color:var(--muted); font-size:13px;}
   footer a{color:var(--accent);}
 </style>
 </head>
@@ -86,7 +91,7 @@
 
   <section class="hero">
     <h1>Explore la <span class="accent">base de données</span> XEN</h1>
-    <p>Ce site lit automatiquement le dossier <code>db</code> du dépôt GitHub du projet : chaque sous-dossier devient un onglet, et chaque fichier affiche son nombre de lignes, sa taille et son lien de téléchargement.</p>
+    <p>Chaque base ajoutée à la collection apparaît automatiquement ici, classée par catégorie, avec son lien de téléchargement direct.</p>
     <div class="hero-actions">
       <a class="btn btn-primary" href="https://claude.ai/artifact/K4e7cHMFC4yi2GgtSzkhv3">Parcourir les bases de données</a>
       <a class="btn btn-ghost" href="https://discord.gg/l2d" target="_blank" rel="noopener">Rejoindre le Discord</a>
@@ -96,94 +101,80 @@
   <div class="how">
     <div class="card">
       <div class="num">1</div>
-      <h3>Dossiers = onglets</h3>
-      <p>Chaque sous-dossier ajouté dans <code>database/</code> sur GitHub apparaît comme un nouvel onglet ici.</p>
+      <h3>Catégories automatiques</h3>
+      <p>Chaque nouvelle base ajoutée à la collection devient aussitôt une catégorie consultable.</p>
     </div>
     <div class="card">
       <div class="num">2</div>
-      <h3>Stats automatiques</h3>
-      <p>Pour chaque fichier : nombre de lignes, taille exacte et équivalent en Go.</p>
+      <h3>Recherche instantanée</h3>
+      <p>Tape un nom dans la barre de recherche pour retrouver une base en une seconde.</p>
     </div>
     <div class="card">
       <div class="num">3</div>
       <h3>Téléchargement direct</h3>
-      <p>Un clic sur le bouton de téléchargement t'envoie vers le lien fourni dans le dossier.</p>
+      <p>Un clic sur le bouton de téléchargement t'envoie directement vers le lien de la base.</p>
     </div>
   </div>
 
+  <section class="features">
+    <h2>Pourquoi XEN Database</h2>
+    <p class="sub">Une collection pensée pour être simple, rapide et toujours à jour.</p>
+    <div class="features-grid">
+      <div class="feat"><span class="emoji">⚡</span><h3>Rapide</h3><p>Interface légère, aucune publicité, aucun chargement inutile.</p></div>
+      <div class="feat"><span class="emoji">🗂️</span><h3>Organisé</h3><p>Les bases sont rangées par thème, faciles à retrouver d'un coup d'œil.</p></div>
+      <div class="feat"><span class="emoji">🔄</span><h3>Toujours à jour</h3><p>La collection grandit régulièrement avec de nouvelles catégories.</p></div>
+      <div class="feat"><span class="emoji">🔐</span><h3>Liens directs</h3><p>Pas d'intermédiaire : chaque bouton mène droit au bon fichier.</p></div>
+      <div class="feat"><span class="emoji">💬</span><h3>Communauté</h3><p>Rejoins le Discord pour suivre les ajouts et échanger avec les autres membres.</p></div>
+      <div class="feat"><span class="emoji">🆓</span><h3>Gratuit</h3><p>L'accès à la collection est et restera entièrement gratuit.</p></div>
+    </div>
+  </section>
+
+  <section class="cta">
+    <h2>Rejoins la communauté</h2>
+    <p>Discussions, annonces de nouvelles bases et support, tout se passe sur le Discord.</p>
+    <a class="btn btn-primary" href="https://discord.gg/l2d" target="_blank" rel="noopener">Rejoindre le Discord</a>
+  </section>
+
+  <section class="faq">
+    <h2>Questions fréquentes</h2>
+    <div id="faq-list"></div>
+  </section>
+
   <footer>
-    Projet <a href="https://github.com/XEN-Tool/database" target="_blank" rel="noopener">XEN-Tool/database</a> ·
-    <a href="https://discord.gg/l2d" target="_blank" rel="noopener">discord.gg/l2d</a>
+    XEN Database · <a href="https://discord.gg/l2d" target="_blank" rel="noopener">discord.gg/l2d</a>
   </footer>
 </div>
 
 <script>
-// Structure de données : un objet par dossier de database/.
-// Remplace ou complète ce bloc avec le contenu réel de ton repo
-// (demande à Claude de le resynchroniser quand tu ajoutes un dossier).
-const DATABASE = {
-  "Security": {
-    files: [
-      { name: "security_leaks.txt", lines: 128540, sizeBytes: 452_000_000, downloadUrl: "https://github.com/XEN-Tool/database/tree/main/database/Security" }
-    ]
-  }
-};
-
-function formatSize(bytes){
-  if(bytes >= 1_000_000_000) return (bytes/1_000_000_000).toFixed(2)+" GB";
-  if(bytes >= 1_000_000) return (bytes/1_000_000).toFixed(2)+" MB";
-  if(bytes >= 1_000) return (bytes/1_000).toFixed(2)+" KB";
-  return bytes+" B";
-}
-function formatGB(bytes){ return (bytes/1_000_000_000).toFixed(3)+" GB"; }
-function formatLines(n){ return n.toLocaleString('fr-FR'); }
-
-const tabsEl = document.getElementById('tabs');
-const statsEl = document.getElementById('stats');
-const filesEl = document.getElementById('files');
-const folders = Object.keys(DATABASE);
-let active = folders[0] || null;
-
-function render(){
-  tabsEl.innerHTML = '';
-  if(folders.length === 0){
-    filesEl.innerHTML = '<div class="empty">Aucun dossier détecté pour le moment.</div>';
-    statsEl.innerHTML = '';
-    return;
-  }
-  folders.forEach(f=>{
-    const b = document.createElement('button');
-    b.className = 'tab' + (f===active ? ' active' : '');
-    b.textContent = f;
-    b.onclick = ()=>{ active = f; render(); };
-    tabsEl.appendChild(b);
-  });
-
-  const data = DATABASE[active];
-  const totalLines = data.files.reduce((s,f)=>s+(f.lines||0),0);
-  const totalSize = data.files.reduce((s,f)=>s+(f.sizeBytes||0),0);
-
-  statsEl.innerHTML = `
-    <div class="stat"><div class="v">${data.files.length}</div><div class="l">Fichier${data.files.length>1?'s':''}</div></div>
-    <div class="stat"><div class="v">${formatLines(totalLines)}</div><div class="l">Lignes au total</div></div>
-    <div class="stat"><div class="v">${formatSize(totalSize)}</div><div class="l">Taille totale</div></div>
-    <div class="stat"><div class="v">${formatGB(totalSize)}</div><div class="l">Équivalent Go</div></div>
-  `;
-
-  filesEl.innerHTML = data.files.map(f => `
-    <div class="file-row">
-      <div class="file-left">
-        <div class="file-icon">🗂️</div>
-        <div>
-          <div class="file-name">${f.name}</div>
-          <div class="file-meta">${formatLines(f.lines||0)} lignes · ${formatSize(f.sizeBytes||0)} (${formatGB(f.sizeBytes||0)})</div>
-        </div>
-      </div>
-      ${f.downloadUrl ? `<a class="dl" href="${f.downloadUrl}" target="_blank" rel="noopener">Télécharger</a>` : ''}
+const FAQ = [
+  { q: "Comment une nouvelle base est-elle ajoutée ?", a: "Dès qu'une base est ajoutée à la collection, elle apparaît automatiquement dans la page « Parcourir les bases de données », classée dans sa catégorie." },
+  { q: "C'est gratuit ?", a: "Oui, l'accès à toute la collection est entièrement gratuit, sans inscription." },
+  { q: "Le bouton télécharger m'amène où ?", a: "Directement vers le lien de téléchargement associé à la base que tu consultes, sans détour." },
+  { q: "Comment proposer une base ?", a: "Passe par le Discord pour proposer une nouvelle base à ajouter à la collection." }
+];
+const faqList = document.getElementById('faq-list');
+faqList.innerHTML = FAQ.map((item, i) => `
+  <div class="faq-item" id="faq-${i}">
+    <div class="faq-q" onclick="toggleFaq(${i})">
+      <span>${item.q}</span>
+      <span class="chev">▾</span>
     </div>
-  `).join('');
+    <div class="faq-a"><p>${item.a}</p></div>
+  </div>
+`).join('');
+function toggleFaq(i){
+  const el = document.getElementById('faq-'+i);
+  const a = el.querySelector('.faq-a');
+  const isOpen = el.classList.contains('open');
+  document.querySelectorAll('.faq-item.open').forEach(o=>{
+    o.classList.remove('open');
+    o.querySelector('.faq-a').style.maxHeight = null;
+  });
+  if(!isOpen){
+    el.classList.add('open');
+    a.style.maxHeight = a.scrollHeight + 'px';
+  }
 }
-render();
 </script>
 </body>
 </html>
