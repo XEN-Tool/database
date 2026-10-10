@@ -3,28 +3,28 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>XEN DB Browser</title>
+<title>XEN Database Explorer</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#f4f5f9; --bg2:#ffffff; --card:#ffffff; --border:#e2e4ec;
-    --text:#14151c; --muted:#5c5f70; --accent:#6c5ce7; --accent2:#00d4b5;
-    --radius:16px;
+    --bg:#f1f1f1; --bg2:#ffffff; --card:#ffffff; --border:#dcdcdc;
+    --text:#121212; --muted:#6a6a6a; --accent:#2b2b2b; --accent2:#6e6e6e; --onaccent:#ffffff;
+    --danger:#ff5c7a; --radius:16px;
     box-sizing:border-box;
     padding-top:env(safe-area-inset-top,0px);
     padding-bottom:env(safe-area-inset-bottom,0px);
   }
   @media (prefers-color-scheme: dark){
     :root:not([data-theme="light"]){
-      --bg:#0a0b10; --bg2:#101219; --card:#14161f; --border:#23263380;
-      --text:#eef0f8; --muted:#9496a8; --accent:#8b7bff; --accent2:#2de8c8;
+      --bg:#0a0a0a; --bg2:#121212; --card:#161616; --border:#2e2e2e80;
+      --text:#f2f2f2; --muted:#9a9a9a; --accent:#e6e6e6; --accent2:#8a8a8a; --onaccent:#0a0a0a;
     }
   }
   :root[data-theme="dark"]{
-    --bg:#0a0b10; --bg2:#101219; --card:#14161f; --border:#23263380;
-    --text:#eef0f8; --muted:#9496a8; --accent:#8b7bff; --accent2:#2de8c8;
+    --bg:#0a0a0a; --bg2:#121212; --card:#161616; --border:#2e2e2e80;
+    --text:#f2f2f2; --muted:#9a9a9a; --accent:#e6e6e6; --accent2:#8a8a8a; --onaccent:#0a0a0a;
   }
   html{scroll-padding-top:env(safe-area-inset-top,0px);}
   *{box-sizing:border-box;}
@@ -37,27 +37,27 @@
     min-height:100%;
   }
   h1,h2,h3{font-family:'Space Grotesk',sans-serif; margin:0;}
-  .wrap{max-width:980px; margin:0 auto; padding:0 20px 60px;}
-  header{display:flex; align-items:center; justify-content:space-between; padding:22px 0; flex-wrap:wrap; gap:10px;}
+  .wrap{max-width:980px; margin:0 auto; padding:0 20px;}
+  header{display:flex; align-items:center; justify-content:space-between; padding:22px 0;}
   .logo{display:flex; align-items:center; gap:10px; font-family:'Space Grotesk'; font-weight:700; font-size:18px;}
   .logo .dot{width:10px;height:10px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));}
-  .head-actions{display:flex; gap:10px; flex-wrap:wrap;}
-  .btn{display:inline-flex; align-items:center; gap:8px; padding:10px 16px; border-radius:999px; font-weight:600; font-size:13px; text-decoration:none; border:1px solid var(--border); cursor:pointer; color:var(--text); background:color-mix(in srgb, var(--card) 70%, transparent);}
-  .btn-primary{background:linear-gradient(135deg,var(--accent),var(--accent2)); color:#0a0b10; border:none;}
-  .hero{padding:20px 0 10px; text-align:center;}
-  .hero h1{font-size:clamp(26px,4.5vw,40px); letter-spacing:-0.02em;}
+  .btn{display:inline-flex; align-items:center; gap:8px; padding:10px 18px; border-radius:999px; font-weight:600; font-size:14px; text-decoration:none; border:1px solid var(--border); transition:transform .15s ease, box-shadow .15s ease; cursor:pointer;}
+  .btn:hover{transform:translateY(-2px);}
+  .btn-primary{background:linear-gradient(135deg,var(--accent),var(--accent2)); color:var(--onaccent); border:none; box-shadow:0 8px 24px color-mix(in srgb, var(--accent) 35%, transparent);}
+  .btn-ghost{color:var(--text); background:color-mix(in srgb, var(--card) 70%, transparent);}
+  .hero{padding:50px 0 30px; text-align:center;}
+  .hero h1{font-size:clamp(30px,5vw,48px); line-height:1.1; letter-spacing:-0.02em;}
   .hero .accent{background:linear-gradient(135deg,var(--accent),var(--accent2)); -webkit-background-clip:text; background-clip:text; color:transparent;}
-  .hero p{color:var(--muted); max-width:560px; margin:12px auto 24px; font-size:15px; line-height:1.6;}
-  .search-wrap{max-width:560px; margin:0 auto 36px; position:relative;}
-  .search-wrap input{
-    width:100%; padding:16px 48px 16px 20px; border-radius:999px; border:1px solid var(--border);
-    background:var(--card); color:var(--text); font-size:15px; font-family:inherit; outline:none;
-  }
-  .search-wrap input:focus{border-color:var(--accent);}
-  .search-wrap .icon{position:absolute; right:18px; top:50%; transform:translateY(-50%); color:var(--muted); pointer-events:none;}
-  section.panel{background:var(--card); border:1px solid var(--border); border-radius:20px; padding:24px; margin-bottom:24px;}
+  .hero p{color:var(--muted); max-width:560px; margin:16px auto 28px; font-size:16px; line-height:1.6;}
+  .hero-actions{display:flex; gap:12px; justify-content:center; flex-wrap:wrap;}
+  .how{display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:16px; margin:50px 0;}
+  .how .card{background:var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:20px;}
+  .how .num{width:30px;height:30px;border-radius:9px;background:color-mix(in srgb, var(--accent) 18%, transparent); color:var(--accent); display:flex; align-items:center; justify-content:center; font-weight:700; font-family:'Space Grotesk'; margin-bottom:12px;}
+  .how h3{font-size:15px; margin-bottom:6px;}
+  .how p{color:var(--muted); font-size:14px; line-height:1.5; margin:0;}
+  section.panel{background:var(--card); border:1px solid var(--border); border-radius:20px; padding:24px; margin-bottom:60px;}
   .panel-head{display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; margin-bottom:18px;}
-  .panel-head h2{font-size:18px;}
+  .panel-head h2{font-size:20px;}
   .panel-head span{color:var(--muted); font-size:13px;}
   .tabs{display:flex; gap:8px; flex-wrap:wrap; border-bottom:1px solid var(--border); padding-bottom:14px; margin-bottom:18px;}
   .tab{padding:8px 16px; border-radius:999px; border:1px solid var(--border); background:transparent; color:var(--muted); font-weight:600; font-size:13px; cursor:pointer; font-family:inherit;}
@@ -68,45 +68,48 @@
   .stat .l{color:var(--muted); font-size:12px; margin-top:2px;}
   .file-row{display:flex; align-items:center; justify-content:space-between; gap:12px; padding:14px; border:1px solid var(--border); border-radius:12px; margin-bottom:10px; flex-wrap:wrap;}
   .file-left{display:flex; align-items:center; gap:12px;}
-  .file-icon{width:36px;height:36px;border-radius:10px;background:color-mix(in srgb, var(--accent2) 16%, transparent); display:flex; align-items:center; justify-content:center; font-size:16px; flex-shrink:0;}
+  .file-icon{width:36px;height:36px;border-radius:10px;background:color-mix(in srgb, var(--accent2) 16%, transparent); display:flex; align-items:center; justify-content:center; font-size:16px;}
   .file-name{font-weight:600; font-size:14px;}
   .file-meta{color:var(--muted); font-size:12px; margin-top:2px;}
-  .badge{display:inline-block; font-size:11px; font-weight:600; color:var(--accent); background:color-mix(in srgb, var(--accent) 14%, transparent); padding:2px 8px; border-radius:999px; margin-right:6px;}
-  .dl{padding:9px 16px; border-radius:999px; background:linear-gradient(135deg,var(--accent),var(--accent2)); border:none; color:#0a0b10; font-size:13px; font-weight:700; text-decoration:none; flex-shrink:0;}
+  .dl{padding:8px 14px; border-radius:999px; background:var(--bg2); border:1px solid var(--border); color:var(--text); font-size:13px; font-weight:600; text-decoration:none;}
   .empty{text-align:center; color:var(--muted); padding:30px 10px; font-size:14px;}
-  footer{text-align:center; padding:10px 0 40px; color:var(--muted); font-size:13px;}
+  footer{text-align:center; padding:30px 0 60px; color:var(--muted); font-size:13px;}
   footer a{color:var(--accent);}
 </style>
 </head>
 <body>
 <div class="wrap">
   <header>
-    <div class="logo"><span class="dot"></span>XEN DB Browser</div>
-    <div class="head-actions">
-      <a class="btn" href="https://discord.gg/l2d" target="_blank" rel="noopener">Discord</a>
-      <a class="btn btn-primary" href="https://github.com/XEN-Tool/database/tree/main/db" target="_blank" rel="noopener">Dossier GitHub</a>
-    </div>
+    <div class="logo"><span class="dot"></span>XEN Database</div>
+    <a class="btn btn-ghost" href="https://discord.gg/l2d" target="_blank" rel="noopener">Discord</a>
   </header>
 
-  <div class="hero">
-    <h1>Parcourir les <span class="accent">bases de données</span></h1>
-    <p>Chaque dossier ajouté dans <code>db</code> sur GitHub devient une base ici : son nom est le titre, et le lien de téléchargement est celui du fichier texte qu'il contient. Cherche directement un nom, ou navigue ci-dessous.</p>
-  </div>
-
-  <div class="search-wrap">
-    <input id="search" type="text" placeholder="Rechercher une base de données...">
-    <span class="icon">🔍</span>
-  </div>
-
-  <section class="panel">
-    <div class="panel-head">
-      <h2 id="panel-title">Catégories</h2>
-      <span id="panel-sub">Données d'exemple — à synchroniser</span>
+  <section class="hero">
+    <h1>Explore la <span class="accent">base de données</span> XEN</h1>
+    <p>Ce site lit automatiquement le dossier <code>db</code> du dépôt GitHub du projet : chaque sous-dossier devient un onglet, et chaque fichier affiche son nombre de lignes, sa taille et son lien de téléchargement.</p>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="https://claude.ai/artifact/K4e7cHMFC4yi2GgtSzkhv3">Parcourir les bases de données</a>
+      <a class="btn btn-ghost" href="https://discord.gg/l2d" target="_blank" rel="noopener">Rejoindre le Discord</a>
     </div>
-    <div class="tabs" id="tabs"></div>
-    <div class="stats-row" id="stats"></div>
-    <div id="files"></div>
   </section>
+
+  <div class="how">
+    <div class="card">
+      <div class="num">1</div>
+      <h3>Dossiers = onglets</h3>
+      <p>Chaque sous-dossier ajouté dans <code>database/</code> sur GitHub apparaît comme un nouvel onglet ici.</p>
+    </div>
+    <div class="card">
+      <div class="num">2</div>
+      <h3>Stats automatiques</h3>
+      <p>Pour chaque fichier : nombre de lignes, taille exacte et équivalent en Go.</p>
+    </div>
+    <div class="card">
+      <div class="num">3</div>
+      <h3>Téléchargement direct</h3>
+      <p>Un clic sur le bouton de téléchargement t'envoie vers le lien fourni dans le dossier.</p>
+    </div>
+  </div>
 
   <footer>
     Projet <a href="https://github.com/XEN-Tool/database" target="_blank" rel="noopener">XEN-Tool/database</a> ·
@@ -115,12 +118,15 @@
 </div>
 
 <script>
-// Une base = un dossier dans db/ sur GitHub.
-// Le nom de la clé EST le titre affiché. downloadUrl = le lien trouvé dans le .txt du dossier.
-// lines / sizeBytes sont FACULTATIFS : ne les ajoute que si tu les donnes toi-même, jamais de valeur inventée.
-// Pour ajouter une base : donne-moi "nom du dossier + lien" et je rajoute une entrée ici.
+// Structure de données : un objet par dossier de database/.
+// Remplace ou complète ce bloc avec le contenu réel de ton repo
+// (demande à Claude de le resynchroniser quand tu ajoutes un dossier).
 const DATABASE = {
-  // "Dessin animé": { downloadUrl: "https://...", lines: null, sizeBytes: null }
+  "Security": {
+    files: [
+      { name: "security_leaks.txt", lines: 128540, sizeBytes: 452_000_000, downloadUrl: "https://github.com/XEN-Tool/database/tree/main/database/Security" }
+    ]
+  }
 };
 
 function formatSize(bytes){
@@ -135,76 +141,49 @@ function formatLines(n){ return n.toLocaleString('fr-FR'); }
 const tabsEl = document.getElementById('tabs');
 const statsEl = document.getElementById('stats');
 const filesEl = document.getElementById('files');
-const titleEl = document.getElementById('panel-title');
-const subEl = document.getElementById('panel-sub');
-const searchEl = document.getElementById('search');
-const titles = Object.keys(DATABASE);
-let active = titles[0] || null;
+const folders = Object.keys(DATABASE);
+let active = folders[0] || null;
 
-function dbCard(title){
-  const d = DATABASE[title] || {};
-  const metaParts = [];
-  if(d.lines != null) metaParts.push(formatLines(d.lines)+" lignes");
-  if(d.sizeBytes != null) metaParts.push(formatSize(d.sizeBytes)+" ("+formatGB(d.sizeBytes)+")");
-  const meta = metaParts.length ? metaParts.join(' · ') : 'Lignes / taille non renseignées';
-  return `
+function render(){
+  tabsEl.innerHTML = '';
+  if(folders.length === 0){
+    filesEl.innerHTML = '<div class="empty">Aucun dossier détecté pour le moment.</div>';
+    statsEl.innerHTML = '';
+    return;
+  }
+  folders.forEach(f=>{
+    const b = document.createElement('button');
+    b.className = 'tab' + (f===active ? ' active' : '');
+    b.textContent = f;
+    b.onclick = ()=>{ active = f; render(); };
+    tabsEl.appendChild(b);
+  });
+
+  const data = DATABASE[active];
+  const totalLines = data.files.reduce((s,f)=>s+(f.lines||0),0);
+  const totalSize = data.files.reduce((s,f)=>s+(f.sizeBytes||0),0);
+
+  statsEl.innerHTML = `
+    <div class="stat"><div class="v">${data.files.length}</div><div class="l">Fichier${data.files.length>1?'s':''}</div></div>
+    <div class="stat"><div class="v">${formatLines(totalLines)}</div><div class="l">Lignes au total</div></div>
+    <div class="stat"><div class="v">${formatSize(totalSize)}</div><div class="l">Taille totale</div></div>
+    <div class="stat"><div class="v">${formatGB(totalSize)}</div><div class="l">Équivalent Go</div></div>
+  `;
+
+  filesEl.innerHTML = data.files.map(f => `
     <div class="file-row">
       <div class="file-left">
         <div class="file-icon">🗂️</div>
         <div>
-          <div class="file-name">${title}</div>
-          <div class="file-meta">${meta}</div>
+          <div class="file-name">${f.name}</div>
+          <div class="file-meta">${formatLines(f.lines||0)} lignes · ${formatSize(f.sizeBytes||0)} (${formatGB(f.sizeBytes||0)})</div>
         </div>
       </div>
-      ${d.downloadUrl ? `<a class="dl" href="${d.downloadUrl}" target="_blank" rel="noopener">Télécharger</a>` : ''}
+      ${f.downloadUrl ? `<a class="dl" href="${f.downloadUrl}" target="_blank" rel="noopener">Télécharger</a>` : ''}
     </div>
-  `;
+  `).join('');
 }
-
-function renderTabsView(){
-  titleEl.textContent = 'Catégories';
-  subEl.textContent = `${titles.length} base${titles.length>1?'s':''}`;
-  statsEl.innerHTML = '';
-  tabsEl.style.display = 'flex';
-  tabsEl.innerHTML = '';
-
-  if(titles.length === 0){
-    filesEl.innerHTML = '<div class="empty">Aucune base pour le moment. Ajoute un dossier dans <code>db</code> sur GitHub, dis-moi son nom et le lien de son fichier texte, et elle apparaîtra ici.</div>';
-    return;
-  }
-
-  titles.forEach(t=>{
-    const b = document.createElement('button');
-    b.className = 'tab' + (t===active ? ' active' : '');
-    b.textContent = t;
-    b.onclick = ()=>{ active = t; renderTabsView(); };
-    tabsEl.appendChild(b);
-  });
-
-  filesEl.innerHTML = dbCard(active);
-}
-
-function renderSearchView(query){
-  tabsEl.style.display = 'none';
-  statsEl.innerHTML = '';
-  const q = query.trim().toLowerCase();
-  const matches = titles.filter(t => t.toLowerCase().includes(q));
-
-  titleEl.textContent = `Résultats pour "${query}"`;
-  subEl.textContent = `${matches.length} base${matches.length>1?'s':''} trouvée${matches.length>1?'s':''}`;
-
-  filesEl.innerHTML = matches.length
-    ? matches.map(t => dbCard(t)).join('')
-    : '<div class="empty">Aucun résultat. Essaie un autre mot-clé.</div>';
-}
-
-searchEl.addEventListener('input', ()=>{
-  const q = searchEl.value;
-  if(q.trim() === ''){ renderTabsView(); }
-  else{ renderSearchView(q); }
-});
-
-renderTabsView();
+render();
 </script>
 </body>
 </html>
