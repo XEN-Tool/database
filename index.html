@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>XEN Database</title>
+<title>XEN DB Browser</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -16,7 +16,7 @@
     padding-top:env(safe-area-inset-top,0px);
     padding-bottom:env(safe-area-inset-bottom,0px);
   }
-  html{scroll-padding-top:env(safe-area-inset-top,0px); background:#141417; scroll-behavior:smooth;}
+  html{scroll-padding-top:env(safe-area-inset-top,0px); background:#141417;}
   *{box-sizing:border-box;}
   html,body{height:100%;}
   ::-webkit-scrollbar{width:10px; height:10px;}
@@ -36,142 +36,126 @@
   }
   @keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
   h1,h2,h3{font-family:'Space Grotesk',sans-serif; margin:0;}
-  .icon{display:inline-flex; width:1em; height:1em;}
+  .icon{display:inline-flex; width:1em; height:1em; flex-shrink:0;}
   .icon svg{width:100%; height:100%;}
-  .wrap{max-width:980px; margin:0 auto; padding:0 20px; width:100%; flex:1; display:flex; flex-direction:column;}
+  .wrap{max-width:980px; margin:0 auto; padding:0 20px 60px; width:100%; flex:1; display:flex; flex-direction:column;}
   header{
     position:sticky; top:env(safe-area-inset-top,0px); z-index:30;
-    display:flex; align-items:center; justify-content:space-between; padding:18px 20px;
+    display:flex; align-items:center; justify-content:space-between; padding:18px 20px; flex-wrap:wrap; gap:10px;
     background:color-mix(in srgb, var(--bg) 78%, transparent); backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
     border-bottom:1px solid var(--border); margin:0 -20px;
   }
   .logo{display:flex; align-items:center; gap:10px; font-family:'Space Grotesk'; font-weight:700; font-size:17px; letter-spacing:-0.01em;}
+  .logo a{color:inherit; text-decoration:none; display:flex; align-items:center; gap:10px;}
   .logo .dot{width:9px;height:9px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2)); animation:pulse 2.4s ease-in-out infinite;}
   @keyframes pulse{
     0%{box-shadow:0 0 0 0 color-mix(in srgb, var(--accent) 35%, transparent);}
     70%{box-shadow:0 0 0 7px transparent;}
     100%{box-shadow:0 0 0 0 transparent;}
   }
-  .btn{display:inline-flex; align-items:center; gap:7px; padding:10px 18px; border-radius:999px; font-weight:600; font-size:13.5px; text-decoration:none; border:1px solid var(--border); transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease; cursor:pointer; color:var(--text); background:color-mix(in srgb, var(--card) 70%, transparent); font-family:inherit;}
+  .btn{display:inline-flex; align-items:center; gap:7px; padding:10px 16px; border-radius:999px; font-weight:600; font-size:13px; text-decoration:none; border:1px solid var(--border); cursor:pointer; color:var(--text); background:color-mix(in srgb, var(--card) 70%, transparent); font-family:inherit; transition:transform .18s ease, border-color .18s ease;}
   .btn:hover{transform:translateY(-2px); border-color:color-mix(in srgb, var(--accent) 35%, var(--border));}
-  .btn-primary{background:linear-gradient(135deg,var(--accent),var(--accent2)); color:var(--onaccent); border:none; box-shadow:0 8px 24px color-mix(in srgb, var(--accent) 25%, transparent);}
-  .hero{padding:72px 0 34px; text-align:center;}
-  .eyebrow{display:inline-block; font-size:11.5px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); margin-bottom:14px;}
-  .hero h1{font-size:clamp(32px,5.2vw,52px); line-height:1.08; letter-spacing:-0.025em;}
+  .btn-primary{background:linear-gradient(135deg,var(--accent),var(--accent2)); color:var(--onaccent); border:none; box-shadow:0 8px 20px color-mix(in srgb, var(--accent) 22%, transparent);}
+  .hero{padding:40px 0 10px; text-align:center;}
+  .eyebrow{display:inline-block; font-size:11.5px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); margin-bottom:12px;}
+  .hero h1{font-size:clamp(27px,4.6vw,42px); letter-spacing:-0.02em;}
   .hero .accent{background:linear-gradient(135deg,var(--accent),var(--accent2)); -webkit-background-clip:text; background-clip:text; color:transparent;}
-  .hero p{color:var(--muted); max-width:540px; margin:18px auto 30px; font-size:16px; line-height:1.65;}
-  .hero-actions{display:flex; gap:12px; justify-content:center; flex-wrap:wrap;}
-  .how{display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:16px; margin:56px 0 24px;}
-  .how .card{background:var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:22px; transition:transform .2s ease, box-shadow .2s ease, border-color .2s ease;}
-  .how .card:hover{transform:translateY(-4px); box-shadow:0 14px 30px rgba(0,0,0,.35); border-color:color-mix(in srgb, var(--accent) 30%, var(--border));}
-  .how .num{width:30px;height:30px;border-radius:9px;background:color-mix(in srgb, var(--accent) 16%, transparent); color:var(--accent); display:flex; align-items:center; justify-content:center; font-weight:700; font-family:'Space Grotesk'; margin-bottom:14px; font-size:13px;}
-  .how h3{font-size:15px; margin-bottom:7px;}
-  .how p{color:var(--muted); font-size:13.5px; line-height:1.55; margin:0;}
+  .hero p{color:var(--muted); max-width:560px; margin:14px auto 26px; font-size:15px; line-height:1.6;}
 
-  .section{margin:66px 0 24px; text-align:center;}
-  .section h2{font-size:27px; margin-bottom:9px; letter-spacing:-0.015em;}
-  .section .sub{color:var(--muted); font-size:15px; margin-bottom:30px;}
-  .features-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); gap:14px; text-align:left;}
-  .feat{background:var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:20px; transition:transform .2s ease, box-shadow .2s ease, border-color .2s ease;}
-  .feat:hover{transform:translateY(-4px); box-shadow:0 14px 30px rgba(0,0,0,.35); border-color:color-mix(in srgb, var(--accent) 30%, var(--border));}
-  .feat .badge-icon{width:38px; height:38px; border-radius:11px; display:flex; align-items:center; justify-content:center; background:color-mix(in srgb, var(--accent) 14%, transparent); color:var(--accent); margin-bottom:14px; font-size:18px;}
-  .feat h3{font-size:14.5px; margin-bottom:6px;}
-  .feat p{color:var(--muted); font-size:13px; line-height:1.55; margin:0;}
+  .toolbar{display:flex; gap:10px; max-width:640px; margin:0 auto 28px; flex-wrap:wrap;}
+  .search-wrap{flex:1; min-width:220px; position:relative;}
+  .search-wrap input{
+    width:100%; padding:14px 18px 14px 44px; border-radius:999px; border:1px solid var(--border);
+    background:var(--card); color:var(--text); font-size:14.5px; font-family:inherit; outline:none;
+    transition:border-color .2s ease, box-shadow .2s ease;
+  }
+  .search-wrap input:focus{border-color:var(--accent); box-shadow:0 0 0 4px color-mix(in srgb, var(--accent) 12%, transparent);}
+  .search-wrap .icon{position:absolute; left:16px; top:50%; transform:translateY(-50%); color:var(--muted); width:16px; height:16px;}
+  select.cat-filter{
+    padding:0 16px; border-radius:999px; border:1px solid var(--border); background:var(--card); color:var(--text);
+    font-family:inherit; font-size:14px; font-weight:600; outline:none; cursor:pointer; min-width:160px;
+  }
 
-  .cta{background:var(--card); border:1px solid var(--border); border-radius:20px; padding:40px 26px; text-align:center; margin:60px 0; box-shadow:0 20px 50px rgba(0,0,0,.3);}
-  .cta h2{font-size:23px; margin-bottom:9px;}
-  .cta p{color:var(--muted); font-size:14px; margin:0 0 22px;}
+  .overview{display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:10px; max-width:560px; margin:0 auto 24px;}
+  .overview .stat{background:var(--card); border:1px solid var(--border); border-radius:12px; padding:14px; text-align:center; transition:transform .2s ease, box-shadow .2s ease;}
+  .overview .stat:hover{transform:translateY(-3px); box-shadow:0 10px 24px rgba(0,0,0,.35);}
+  .overview .v{font-family:'Space Grotesk'; font-size:21px; font-weight:700;}
+  .overview .l{color:var(--muted); font-size:11.5px; margin-top:2px;}
+  .add-row{text-align:center; margin-bottom:22px;}
 
-  .faq{margin:56px 0 70px; margin-top:auto;}
-  .faq h2{font-size:23px; text-align:center; margin-bottom:24px;}
-  .faq-item{background:var(--card); border:1px solid var(--border); border-radius:12px; margin-bottom:10px; overflow:hidden; transition:border-color .2s ease;}
-  .faq-item:hover{border-color:color-mix(in srgb, var(--accent) 30%, var(--border));}
-  .faq-q{padding:17px 18px; display:flex; align-items:center; justify-content:space-between; cursor:pointer; font-weight:600; font-size:14px;}
-  .faq-q .chev{color:var(--muted); transition:transform .2s ease; flex-shrink:0; margin-left:12px;}
-  .faq-item.open .faq-q .chev{transform:rotate(180deg);}
-  .faq-a{max-height:0; overflow:hidden; transition:max-height .25s ease;}
-  .faq-a p{color:var(--muted); font-size:13px; line-height:1.65; padding:0 18px 17px; margin:0;}
+  section.panel{background:var(--card); border:1px solid var(--border); border-radius:20px; padding:24px; margin-bottom:24px; box-shadow:0 20px 50px rgba(0,0,0,.28);}
+  .panel-head{display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; margin-bottom:18px;}
+  .panel-head h2{font-size:17px;}
+  .panel-head span{color:var(--muted); font-size:12.5px;}
+  .tabs{display:flex; gap:7px; flex-wrap:wrap; border-bottom:1px solid var(--border); padding-bottom:16px; margin-bottom:18px;}
+  .tab{padding:8px 15px; border-radius:999px; border:1px solid var(--border); background:transparent; color:var(--muted); font-weight:600; font-size:12.5px; cursor:pointer; font-family:inherit; display:inline-flex; align-items:center; gap:6px; transition:transform .15s ease, border-color .15s ease;}
+  .tab:hover{transform:translateY(-1px); border-color:color-mix(in srgb, var(--accent) 35%, var(--border));}
+  .tab .count{font-size:10.5px; opacity:.7;}
+  .tab.active{background:linear-gradient(135deg,var(--accent),var(--accent2)); color:var(--onaccent); border-color:transparent; box-shadow:0 6px 16px color-mix(in srgb, var(--accent) 25%, transparent);}
 
-  footer{text-align:center; padding:24px 0 50px; color:var(--muted); font-size:13px;}
+  .file-row{display:flex; align-items:center; justify-content:space-between; gap:12px; padding:14px; border:1px solid var(--border); border-radius:12px; margin-bottom:10px; flex-wrap:wrap; transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease;}
+  .file-row:hover{transform:translateY(-2px); box-shadow:0 10px 22px rgba(0,0,0,.32); border-color:color-mix(in srgb, var(--accent) 30%, var(--border));}
+  .file-left{display:flex; align-items:center; gap:12px; min-width:0;}
+  .avatar{width:38px;height:38px;border-radius:11px; flex-shrink:0; display:flex; align-items:center; justify-content:center; font-family:'Space Grotesk'; font-weight:700; font-size:14px; background:linear-gradient(135deg, color-mix(in srgb, var(--accent) 25%, var(--bg2)), color-mix(in srgb, var(--accent2) 25%, var(--bg2))); color:var(--text);}
+  .file-name{font-weight:600; font-size:14px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+  .file-meta{color:var(--muted); font-size:12px; margin-top:2px;}
+  .badge{display:inline-block; font-size:10.5px; font-weight:600; color:var(--accent); background:color-mix(in srgb, var(--accent) 14%, transparent); padding:2px 8px; border-radius:999px; margin-right:6px;}
+  .file-actions{display:flex; gap:8px; flex-shrink:0;}
+  .dl{padding:9px 16px; border-radius:999px; background:linear-gradient(135deg,var(--accent),var(--accent2)); border:none; color:var(--onaccent); font-size:13px; font-weight:700; text-decoration:none;}
+  .copy,.del{padding:9px 13px; border-radius:999px; background:var(--bg2); border:1px solid var(--border); color:var(--text); font-size:13px; font-weight:600; cursor:pointer; font-family:inherit; display:inline-flex; align-items:center;}
+  .del{color:#e0776b;}
+  .del .icon{width:13px; height:13px;}
+  .empty{text-align:center; color:var(--muted); padding:30px 10px; font-size:14px; line-height:1.65;}
+  footer{text-align:center; padding:10px 0 40px; color:var(--muted); font-size:13px;}
   footer a{color:var(--accent); text-decoration:none;}
+
+  .overlay{position:fixed; inset:0; background:rgba(0,0,0,.55); display:flex; align-items:center; justify-content:center; padding:20px; z-index:50;}
+  .overlay.hidden{display:none;}
+  .modal{background:var(--card); border:1px solid var(--border); border-radius:18px; padding:24px; max-width:420px; width:100%; box-shadow:0 30px 70px rgba(0,0,0,.5);}
+  .modal h3{font-size:16.5px; margin-bottom:16px;}
+  .field{margin-bottom:12px;}
+  .field label{display:block; font-size:12px; color:var(--muted); margin-bottom:5px; font-weight:600;}
+  .field input,.field select{width:100%; padding:10px 12px; border-radius:10px; border:1px solid var(--border); background:var(--bg2); color:var(--text); font-family:inherit; font-size:14px; outline:none;}
+  .field input:focus,.field select:focus{border-color:var(--accent);}
+  .field-row{display:grid; grid-template-columns:1fr 1fr; gap:10px;}
+  .modal-actions{display:flex; gap:10px; margin-top:18px; justify-content:flex-end;}
+  .admin-link{position:fixed; bottom:16px; right:16px; font-size:11px; color:var(--muted); background:var(--card); border:1px solid var(--border); padding:7px 13px; border-radius:999px; cursor:pointer; opacity:.6; z-index:10; display:inline-flex; align-items:center; gap:6px; transition:opacity .2s ease;}
+  .admin-link:hover{opacity:1;}
+  .admin-link .icon{width:12px; height:12px;}
+  .login-error{color:#e0776b; font-size:12px; margin-top:-4px; margin-bottom:10px; display:none;}
 </style>
 </head>
 <body>
 <div class="wrap">
   <header>
-    <div class="logo"><span class="dot"></span>XEN Database</div>
+    <div class="logo"><a href="https://github.com/XEN-Tool/database/blob/main/XEN%20DB%20Browser.html"><span class="dot"></span>XEN Database</a></div>
     <a class="btn" href="https://discord.gg/l2d" target="_blank" rel="noopener">Discord</a>
   </header>
 
-  <section class="hero">
-    <span class="eyebrow">Collection toujours à jour</span>
-    <h1>Explore la <span class="accent">base de données</span> XEN</h1>
-    <p>Chaque base ajoutée à la collection apparaît instantanément ici, classée par catégorie, avec son lien de téléchargement direct.</p>
-    <div class="hero-actions">
-    <a class="btn btn-primary" href="/XEN%20DB%20Browser.html">Parcourir les bases de données</a>
-     <a class="btn" href="https://discord.gg/l2d" target="_blank" rel="noopener">Rejoindre le Discord</a>
-   </div>
-  </section>
-
-  <div class="how">
-    <div class="card">
-      <div class="num">01</div>
-      <h3>Catégories automatiques</h3>
-      <p>Chaque nouvelle base rejoint une catégorie, existante ou créée à la volée.</p>
-    </div>
-    <div class="card">
-      <div class="num">02</div>
-      <h3>Recherche filtrée</h3>
-      <p>Cherche un nom et filtre par catégorie pour retrouver une base en une seconde.</p>
-    </div>
-    <div class="card">
-      <div class="num">03</div>
-      <h3>Téléchargement direct</h3>
-      <p>Un clic sur le bouton de téléchargement t'envoie droit vers le lien de la base.</p>
-    </div>
+  <div class="hero">
+    <span class="eyebrow">Collection complète</span>
+    <h1>Parcourir les <span class="accent">bases de données</span></h1>
+    <p>Chaque base ajoutée apparaît instantanément pour tous les visiteurs, classée par catégorie, avec son lien de téléchargement direct.</p>
   </div>
 
-  <section class="section">
-    <span class="eyebrow">Pourquoi nous</span>
-    <h2>Pensé pour être simple et rapide</h2>
-    <p class="sub">Une collection organisée, sans superflu.</p>
-    <div class="features-grid">
-      <div class="feat">
-        <div class="badge-icon"><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 11 14 9 22 21 10 13 10 13 2"></polygon></svg></span></div>
-        <h3>Rapide</h3><p>Interface légère, aucune publicité, aucun chargement inutile.</p>
-      </div>
-      <div class="feat">
-        <div class="badge-icon"><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"></rect><rect x="14" y="3" width="7" height="7" rx="1.5"></rect><rect x="3" y="14" width="7" height="7" rx="1.5"></rect><rect x="14" y="14" width="7" height="7" rx="1.5"></rect></svg></span></div>
-        <h3>Organisé</h3><p>Les bases sont rangées par catégorie, faciles à retrouver.</p>
-      </div>
-      <div class="feat">
-        <div class="badge-icon"><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 15-6.7L21 8"></path><path d="M21 3v5h-5"></path><path d="M21 12a9 9 0 0 1-15 6.7L3 16"></path><path d="M3 21v-5h5"></path></svg></span></div>
-        <h3>Toujours à jour</h3><p>La collection grandit régulièrement avec de nouvelles catégories.</p>
-      </div>
-      <div class="feat">
-        <div class="badge-icon"><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1"></path><path d="M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1"></path></svg></span></div>
-        <h3>Liens directs</h3><p>Pas d'intermédiaire : chaque bouton mène droit au bon fichier.</p>
-      </div>
-      <div class="feat">
-        <div class="badge-icon"><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-8.5 8.5 8.47 8.47 0 0 1-4-1L3 20l1-5.5A8.47 8.47 0 0 1 3 11.5 8.38 8.38 0 0 1 11.5 3a8.38 8.38 0 0 1 9.5 8.5z"></path></svg></span></div>
-        <h3>Communauté</h3><p>Rejoins le Discord pour suivre les ajouts et échanger.</p>
-      </div>
-      <div class="feat">
-        <div class="badge-icon"><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41 11 3.83A2 2 0 0 0 9.59 3.17L3 3a1 1 0 0 0-1 1l.17 6.59a2 2 0 0 0 .66 1.41l9.58 9.58a2 2 0 0 0 2.83 0l6.35-6.35a2 2 0 0 0 0-2.82Z"></path><circle cx="7.5" cy="7.5" r="1.5"></circle></svg></span></div>
-        <h3>Gratuit</h3><p>L'accès à la collection est et restera entièrement gratuit.</p>
-      </div>
+  <div class="toolbar">
+    <div class="search-wrap">
+      <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></span>
+      <input id="search" type="text" placeholder="Rechercher une base de données...">
     </div>
-  </section>
+    <select class="cat-filter" id="cat-filter"></select>
+  </div>
 
-  <section class="cta">
-    <h2>Rejoins la communauté</h2>
-    <p>Discussions, annonces de nouvelles bases et support, tout se passe sur le Discord.</p>
-    <a class="btn btn-primary" href="https://discord.gg/l2d" target="_blank" rel="noopener">Rejoindre le Discord</a>
-  </section>
+  <div class="overview" id="overview"></div>
+  <div class="add-row" id="add-row"></div>
 
-  <section class="faq">
-    <h2>Questions fréquentes</h2>
-    <div id="faq-list"></div>
+  <section class="panel">
+    <div class="panel-head">
+      <h2 id="panel-title">Catégories</h2>
+      <span id="panel-sub"></span>
+    </div>
+    <div class="tabs" id="tabs"></div>
+    <div id="files"></div>
   </section>
 
   <footer>
@@ -179,37 +163,273 @@
   </footer>
 </div>
 
-<script>
-const CHEVRON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>';
-const FAQ = [
-  { q: "Comment une nouvelle base est-elle ajoutée ?", a: "Dès qu'une base est ajoutée à la collection, elle apparaît automatiquement dans la page « Parcourir les bases de données », classée dans sa catégorie." },
-  { q: "C'est gratuit ?", a: "Oui, l'accès à toute la collection est entièrement gratuit, sans inscription." },
-  { q: "Le bouton télécharger m'amène où ?", a: "Directement vers le lien de téléchargement associé à la base que tu consultes, sans détour." },
-  { q: "Comment proposer une base ?", a: "Passe par le Discord pour proposer une nouvelle base à ajouter à la collection." }
-];
-const faqList = document.getElementById('faq-list');
-faqList.innerHTML = FAQ.map((item, i) => `
-  <div class="faq-item" id="faq-${i}">
-    <div class="faq-q" onclick="toggleFaq(${i})">
-      <span>${item.q}</span>
-      <span class="icon chev" style="width:16px;height:16px">${CHEVRON}</span>
+<div class="overlay hidden" id="overlay">
+  <div class="modal">
+    <h3>Ajouter une base</h3>
+    <div class="field">
+      <label>Catégorie</label>
+      <select id="f-cat-select" onchange="onCatSelectChange()"></select>
     </div>
-    <div class="faq-a"><p>${item.a}</p></div>
+    <div class="field" id="f-cat-new-wrap">
+      <label>Nom de la nouvelle catégorie</label>
+      <input id="f-cat-new" placeholder="Ex: Sécurité">
+    </div>
+    <div class="field"><label>Nom de la base</label><input id="f-title" placeholder="Ex: Dessin animé"></div>
+    <div class="field"><label>Lien de téléchargement</label><input id="f-url" placeholder="https://..."></div>
+    <div class="field-row">
+      <div class="field"><label>Lignes (optionnel)</label><input id="f-lines" type="number" placeholder="—"></div>
+      <div class="field"><label>Taille en Mo (optionnel)</label><input id="f-size" type="number" placeholder="—"></div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn" onclick="closeModal()">Annuler</button>
+      <button class="btn btn-primary" onclick="submitEntry()">Ajouter</button>
+    </div>
   </div>
-`).join('');
-function toggleFaq(i){
-  const el = document.getElementById('faq-'+i);
-  const a = el.querySelector('.faq-a');
-  const isOpen = el.classList.contains('open');
-  document.querySelectorAll('.faq-item.open').forEach(o=>{
-    o.classList.remove('open');
-    o.querySelector('.faq-a').style.maxHeight = null;
-  });
-  if(!isOpen){
-    el.classList.add('open');
-    a.style.maxHeight = a.scrollHeight + 'px';
+</div>
+
+<div class="overlay hidden" id="login-overlay">
+  <div class="modal">
+    <h3>Connexion admin</h3>
+    <div class="field"><label>Identifiant</label><input id="l-user" autocomplete="off"></div>
+    <div class="field"><label>Mot de passe</label><input id="l-pass" type="password"></div>
+    <div class="login-error" id="l-error">Identifiants incorrects.</div>
+    <div class="modal-actions">
+      <button class="btn" onclick="closeLogin()">Annuler</button>
+      <button class="btn btn-primary" onclick="attemptLogin()">Se connecter</button>
+    </div>
+  </div>
+</div>
+<button class="admin-link" id="admin-link" onclick="openLogin()">
+  <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg></span>
+  Admin
+</button>
+
+<script>
+const ADMIN_HASH = '440c33c1b7f6f6699ac136d7102ad53dcc5c4697805720338c17607f68fa2c18';
+const DEL_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>';
+const NEW_CAT = '__new__';
+let adminUnlocked = false;
+let entries = [];
+let active = 'Toutes';
+let isRealOwner = false;
+let dbRef = null;
+function canWrite(){ return isRealOwner && adminUnlocked; }
+
+async function sha256(str){
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+  return [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2,'0')).join('');
+}
+function openLogin(){ document.getElementById('login-overlay').classList.remove('hidden'); }
+function closeLogin(){
+  document.getElementById('login-overlay').classList.add('hidden');
+  document.getElementById('l-error').style.display = 'none';
+  document.getElementById('l-user').value = '';
+  document.getElementById('l-pass').value = '';
+}
+async function attemptLogin(){
+  const u = document.getElementById('l-user').value.trim();
+  const p = document.getElementById('l-pass').value;
+  const hash = await sha256(`${u}:${p}`);
+  if(hash === ADMIN_HASH){
+    adminUnlocked = true;
+    closeLogin();
+    document.getElementById('admin-link').style.display = 'none';
+    render();
+  } else {
+    document.getElementById('l-error').style.display = 'block';
   }
 }
+
+function formatSize(bytes){
+  if(bytes >= 1_000_000_000) return (bytes/1_000_000_000).toFixed(2)+" GB";
+  if(bytes >= 1_000_000) return (bytes/1_000_000).toFixed(2)+" MB";
+  if(bytes >= 1_000) return (bytes/1_000).toFixed(2)+" KB";
+  return bytes+" B";
+}
+function formatGB(bytes){ return (bytes/1_000_000_000).toFixed(3)+" GB"; }
+function formatLines(n){ return n.toLocaleString('fr-FR'); }
+function initials(title){
+  const words = title.trim().split(/\s+/).slice(0,2);
+  return words.map(w => w[0]?.toUpperCase() || '').join('') || '?';
+}
+
+const overviewEl = document.getElementById('overview');
+const addRowEl = document.getElementById('add-row');
+const tabsEl = document.getElementById('tabs');
+const filesEl = document.getElementById('files');
+const titleEl = document.getElementById('panel-title');
+const subEl = document.getElementById('panel-sub');
+const searchEl = document.getElementById('search');
+const catFilterEl = document.getElementById('cat-filter');
+const overlayEl = document.getElementById('overlay');
+
+function categories(){
+  return [...new Set(entries.map(e=>e.category))].sort((a,b)=>a.localeCompare(b));
+}
+
+function entryCard(e){
+  const metaParts = [];
+  if(e.lines != null) metaParts.push(formatLines(e.lines)+" lignes");
+  if(e.sizeBytes != null) metaParts.push(formatSize(e.sizeBytes)+" ("+formatGB(e.sizeBytes)+")");
+  const meta = metaParts.length ? metaParts.join(' · ') : 'Lignes / taille non renseignées';
+  return `
+    <div class="file-row">
+      <div class="file-left">
+        <div class="avatar">${initials(e.title)}</div>
+        <div style="min-width:0">
+          <div class="file-name">${active==='Toutes' ? `<span class="badge">${e.category}</span>` : ''}${e.title}</div>
+          <div class="file-meta">${meta}</div>
+        </div>
+      </div>
+      <div class="file-actions">
+        ${e.downloadUrl ? `<button class="copy" onclick="copyLink('${e.downloadUrl.replace(/'/g,"\\'")}', this)">Copier</button>` : ''}
+        ${e.downloadUrl ? `<a class="dl" href="${e.downloadUrl}" target="_blank" rel="noopener">Télécharger</a>` : ''}
+        ${canWrite() ? `<button class="del" onclick="removeEntry('${e.id}')"><span class="icon">${DEL_ICON}</span></button>` : ''}
+      </div>
+    </div>
+  `;
+}
+
+function copyLink(url, btn){
+  navigator.clipboard?.writeText(url).then(()=>{
+    const old = btn.textContent;
+    btn.textContent = 'Copié !';
+    setTimeout(()=>{ btn.textContent = old; }, 1500);
+  }).catch(()=>{});
+}
+
+function renderOverview(){
+  const cats = categories();
+  overviewEl.innerHTML = `
+    <div class="stat"><div class="v">${entries.length}</div><div class="l">Base${entries.length>1?'s':''}</div></div>
+    <div class="stat"><div class="v">${cats.length}</div><div class="l">Catégorie${cats.length>1?'s':''}</div></div>
+  `;
+}
+
+function renderAddRow(){
+  addRowEl.innerHTML = canWrite()
+    ? `<button class="btn btn-primary" onclick="openModal()">+ Ajouter une base</button>`
+    : '';
+}
+
+function renderCatFilter(){
+  const cats = categories();
+  const current = catFilterEl.value || 'Toutes';
+  catFilterEl.innerHTML = `<option value="Toutes">Toutes catégories</option>` +
+    cats.map(c => `<option value="${c}">${c}</option>`).join('');
+  catFilterEl.value = cats.includes(current) || current==='Toutes' ? current : 'Toutes';
+}
+
+function renderTabs(){
+  const cats = categories();
+  tabsEl.innerHTML = '';
+  if(cats.length === 0){ tabsEl.style.display = 'none'; return; }
+  tabsEl.style.display = 'flex';
+  const allBtn = document.createElement('button');
+  allBtn.className = 'tab' + (active==='Toutes' ? ' active' : '');
+  allBtn.innerHTML = `Toutes <span class="count">${entries.length}</span>`;
+  allBtn.onclick = ()=>{ active='Toutes'; catFilterEl.value='Toutes'; render(); };
+  tabsEl.appendChild(allBtn);
+  cats.forEach(cat=>{
+    const count = entries.filter(e=>e.category===cat).length;
+    const b = document.createElement('button');
+    b.className = 'tab' + (cat===active ? ' active' : '');
+    b.innerHTML = `${cat} <span class="count">${count}</span>`;
+    b.onclick = ()=>{ active=cat; catFilterEl.value=cat; render(); };
+    tabsEl.appendChild(b);
+  });
+}
+
+function render(){
+  renderOverview();
+  renderAddRow();
+  renderTabs();
+  renderCatFilter();
+
+  const q = searchEl.value.trim().toLowerCase();
+  let base = active === 'Toutes' ? entries : entries.filter(e => e.category === active);
+  let list = q ? base.filter(e => e.title.toLowerCase().includes(q) || e.category.toLowerCase().includes(q)) : base;
+
+  titleEl.textContent = q ? `Résultats pour "${searchEl.value}"` : (active==='Toutes' ? 'Toutes les bases' : active);
+  subEl.textContent = `${list.length} base${list.length>1?'s':''}`;
+
+  if(entries.length === 0){
+    filesEl.innerHTML = `<div class="empty">Aucune base pour le moment.${canWrite() ? '<br>Clique sur « + Ajouter une base » pour commencer.' : ''}</div>`;
+    return;
+  }
+  filesEl.innerHTML = list.length
+    ? list.map(entryCard).join('')
+    : '<div class="empty">Aucun résultat.</div>';
+}
+
+function renderModalCatSelect(){
+  const cats = categories();
+  const sel = document.getElementById('f-cat-select');
+  sel.innerHTML = cats.map(c => `<option value="${c}">${c}</option>`).join('') +
+    `<option value="${NEW_CAT}">+ Nouvelle catégorie</option>`;
+  sel.value = cats.length ? cats[0] : NEW_CAT;
+  onCatSelectChange();
+}
+function onCatSelectChange(){
+  const sel = document.getElementById('f-cat-select');
+  const newWrap = document.getElementById('f-cat-new-wrap');
+  newWrap.style.display = sel.value === NEW_CAT ? 'block' : 'none';
+}
+
+function openModal(){ renderModalCatSelect(); overlayEl.classList.remove('hidden'); }
+function closeModal(){
+  overlayEl.classList.add('hidden');
+  ['f-cat-new','f-title','f-url','f-lines','f-size'].forEach(id=> document.getElementById(id).value = '');
+}
+
+async function submitEntry(){
+  if(!dbRef) return;
+  const sel = document.getElementById('f-cat-select').value;
+  const category = sel === NEW_CAT ? document.getElementById('f-cat-new').value.trim() : sel;
+  const title = document.getElementById('f-title').value.trim();
+  const downloadUrl = document.getElementById('f-url').value.trim();
+  const linesVal = document.getElementById('f-lines').value;
+  const sizeVal = document.getElementById('f-size').value;
+  if(!category || !title || !downloadUrl) return;
+  const data = { category, title, downloadUrl, createdAt: new Date().toISOString() };
+  if(linesVal !== '') data.lines = Number(linesVal);
+  if(sizeVal !== '') data.sizeBytes = Math.round(Number(sizeVal) * 1_000_000);
+  try{
+    await dbRef.collection('entries').add(data);
+    closeModal();
+  }catch(err){ /* write rejected: viewer likely lacks permission */ }
+}
+
+async function removeEntry(id){
+  if(!dbRef) return;
+  try{ await dbRef.collection('entries').doc(id).delete(); }catch(err){}
+}
+
+searchEl.addEventListener('input', render);
+catFilterEl.addEventListener('change', ()=>{ active = catFilterEl.value; render(); });
+
+document.addEventListener('keydown', (e)=>{
+  if(e.key !== 'F10') return;
+  e.preventDefault();
+  if(!isRealOwner) return;
+  if(adminUnlocked){ openModal(); } else { openLogin(); }
+});
+
+(async function init(){
+  const db = await claude.use('db');
+  const user = await claude.use('user');
+  dbRef = db;
+  isRealOwner = !!(user && user.isOwner?.());
+  if(!isRealOwner){ document.getElementById('admin-link').style.display = 'none'; }
+  if(!db){
+    filesEl.innerHTML = '<div class="empty">Impossible de charger les bases pour le moment.</div>';
+    return;
+  }
+  db.collection('entries').onSnapshot((snap)=>{
+    entries = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    render();
+  }, ()=>{});
+})();
 </script>
 </body>
 </html>
