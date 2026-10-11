@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>XEN Database</title>
+<title>Leak2Data</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -216,7 +216,7 @@
 </head>
 <body>
 <header>
-  <div class="logo" onclick="showView('home')"><span class="dot"></span>XEN Database</div>
+  <div class="logo" onclick="showView('home')"><span class="dot"></span>Leak2Data</div>
   <nav class="main-nav">
     <button id="nav-home" onclick="showView('home')">Accueil</button>
     <button id="nav-db" onclick="showView('db')">Bases de données</button>
@@ -231,7 +231,7 @@
 <section id="view-home" class="view-pane">
   <section class="hero">
     <span class="eyebrow">Collection toujours à jour</span>
-    <h1>Explore la <span class="accent">base de données</span> XEN</h1>
+    <h1>Explore la <span class="accent">base de données</span> L2D</h1>
     <p>Chaque base ajoutée à la collection apparaît instantanément ici, classée par catégorie, avec son lien de téléchargement direct.</p>
     <div class="hero-actions">
       <button class="btn btn-primary" onclick="showView('db')">Parcourir les bases de données</button>
@@ -318,7 +318,7 @@
 </main>
 
 <footer>
-  XEN Database · <a href="https://discord.gg/l2d" target="_blank" rel="noopener">discord.gg/l2d</a>
+  Leak2Data · <a href="https://discord.gg/l2d" target="_blank" rel="noopener">discord.gg/l2d</a>
 </footer>
 
 <div class="overlay hidden" id="overlay">
@@ -426,7 +426,7 @@ function toggleFaq(i){
 const ADMIN_HASH = '440c33c1b7f6f6699ac136d7102ad53dcc5c4697805720338c17607f68fa2c18';
 const DEL_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>';
 const NEW_CAT = '__new__';
-const ADMIN_FLAG_KEY = 'xen_admin_unlocked';
+const ADMIN_FLAG_KEY = 'L2D_admin_unlocked';
 let adminUnlocked = false;
 let entries = [];
 let active = 'Toutes';
