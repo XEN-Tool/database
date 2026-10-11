@@ -106,7 +106,7 @@ app.post('/api/entries', requireAuth, async (req, res) => {
 });
 
 app.delete('/api/entries/:id', requireAuth, async (req, res) => {
-  await pool.query('DELETE FROM entries WHERE id=$1', [req.params.id]);
+  await pool.query('DELETE FROM entries WHERE ? id=$1', [req.params.id]);
   res.json({ ok: true });
 });
 
