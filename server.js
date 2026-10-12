@@ -106,8 +106,8 @@ app.post('/api/entries', requireAuth, async (req, res) => {
 });
 
 app.delete('/api/entries/:id', requireAuth, async (req, res) => {
-  await pool.query('DELETE FROM entries WHERE ? id=$1', [req.params.id]);
-  res.json({ ok: true });
+await pool.query('DELETE FROM entries WHERE id=$1', [req.params.id]);
+res.json({ ok: true });
 });
 
 const PORT = process.env.PORT || 3000;
