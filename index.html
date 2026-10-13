@@ -68,7 +68,7 @@
   .hero{padding:72px 0 34px; text-align:center;}
   .eyebrow{display:inline-block; font-size:11.5px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); margin-bottom:14px;}
   .hero h1{font-size:clamp(32px,5.2vw,52px); line-height:1.08; letter-spacing:-0.025em;}
-  .hero .accent{background:linear-gradient(135deg,var(--accent),var(--accent2)); -webkit-background-clip:text; background-clip:text; color:transparent;}
+  .accent{background:linear-gradient(135deg,var(--accent),var(--accent2)); -webkit-background-clip:text; background-clip:text; color:transparent;}
   .hero p{color:var(--muted); max-width:540px; margin:18px auto 30px; font-size:16px; line-height:1.65;}
   .hero-actions{display:flex; gap:12px; justify-content:center; flex-wrap:wrap;}
   .how{display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:16px; margin:56px 0 24px;}
@@ -197,7 +197,7 @@
   .field input:focus,.field select:focus{border-color:var(--accent);}
   .field-row{display:grid; grid-template-columns:1fr 1fr; gap:10px;}
   .modal-actions{display:flex; gap:10px; margin-top:18px; justify-content:flex-end;}
-  .admin-link{position:fixed; bottom:16px; right:16px; font-size:11px; color:var(--muted); background:var(--card); border:1px solid var(--border); padding:7px 13px; border-radius:999px; cursor:pointer; opacity:.6; z-index:10; display:inline-flex; align-items:center; gap:6px; transition:opacity .2s cubic-bezier(.16,1,.3,1);}
+  .admin-link{position:fixed; bottom:16px; right:16px; font-size:11px; color:var(--muted); background:var(--card); border:1px solid var(--border); padding:7px 13px; border-radius:999px; cursor:pointer; opacity:.6; z-index:10; display:none; align-items:center; gap:6px; transition:opacity .2s cubic-bezier(.16,1,.3,1); font-family:inherit;}
   .admin-link:hover{opacity:1;}
   .admin-link .icon{width:12px; height:12px;}
   .login-error{color:#e0776b; font-size:12px; margin-top:-4px; margin-bottom:10px; display:none;}
@@ -361,7 +361,7 @@
   </div>
 </div>
 <div class="toast-wrap" id="toast-wrap"></div>
-<button class="admin-link hidden" id="logout-link" onclick="logoutAdmin()">
+<button class="admin-link" id="logout-link" onclick="logoutAdmin()">
   <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg></span>
   Déconnexion
 </button>
@@ -382,7 +382,7 @@ function showView(name){
   document.getElementById('nav-home').classList.toggle('active', name==='home');
   document.getElementById('nav-db').classList.toggle('active', name==='db');
 
-  if(current === target || viewSwitching) return;
+  if(current === target || viewSwitching) { observeReveals(); return; }
   viewSwitching = true;
   current.classList.add('fade-out');
   setTimeout(()=>{
@@ -422,9 +422,10 @@ function toggleFaq(i){
   if(!isOpen){ el.classList.add('open'); a.style.maxHeight = a.scrollHeight + 'px'; }
 }
 
-/* --- DB browser (backed by your own Render API) --- */
-// Set this to your backend's Render URL, e.g. "https://leak2data.onrender.com"
-const API_BASE = "https://leak2data.onrender.com";
+/* --- DB browser --- */
+// Vide = même domaine que la page (le serveur Express sert aussi le HTML).
+// Si tu héberges ce HTML ailleurs, mets l'URL de ton API, ex: "https://leak2data.onrender.com"
+const API_BASE = "";
 
 const DEL_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>';
 const NEW_CAT = '__new__';
@@ -433,6 +434,14 @@ let entries = [];
 let active = 'Toutes';
 let pollTimer = null;
 function canWrite(){ return adminUnlocked; }
+
+function esc(s){
+  return String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+function safeUrl(u){
+  try{ const x = new URL(u); return (x.protocol === 'http:' || x.protocol === 'https:') ? x.href : ''; }
+  catch(e){ return ''; }
+}
 
 async function api(path, opts = {}){
   const res = await fetch(API_BASE + path, {
@@ -455,7 +464,7 @@ async function logoutAdmin(){
   toast('Déconnecté');
 }
 
-function openLogin(){ document.getElementById('login-overlay').classList.remove('hidden'); }
+function openLogin(){ document.getElementById('login-overlay').classList.remove('hidden'); document.getElementById('l-user').focus(); }
 function closeLogin(){
   document.getElementById('login-overlay').classList.add('hidden');
   document.getElementById('l-error').style.display = 'none';
@@ -476,12 +485,25 @@ async function attemptLogin(){
   }
 }
 
+const overviewEl = document.getElementById('overview');
+const addRowEl = document.getElementById('add-row');
+const tabsEl = document.getElementById('tabs');
+const filesEl = document.getElementById('files');
+const titleEl = document.getElementById('panel-title');
+const subEl = document.getElementById('panel-sub');
+const searchEl = document.getElementById('search');
+const overlayEl = document.getElementById('overlay');
+let sortMode = 'recent';
+let modalCategoryValue = null;
+
 async function loadEntries(){
   try{
     entries = await api('/api/entries');
     render();
   }catch(e){
-    filesEl.innerHTML = `<div class="empty">Impossible de joindre le serveur pour le moment.<br>Vérifie que le backend est bien démarré sur Render.</div>`;
+    if(entries.length === 0){
+      filesEl.innerHTML = `<div class="empty">Impossible de joindre le serveur pour le moment.<br>Réessaie dans quelques secondes (le serveur gratuit peut mettre une minute à se réveiller).</div>`;
+    }
   }
 }
 
@@ -492,7 +514,7 @@ function formatSize(bytes){
   return bytes+" B";
 }
 function formatGB(bytes){ return (bytes/1_000_000_000).toFixed(3)+" GB"; }
-function formatLines(n){ return n.toLocaleString('fr-FR'); }
+function formatLines(n){ return Number(n).toLocaleString('fr-FR'); }
 function initials(title){
   const words = title.trim().split(/\s+/).slice(0,2);
   return words.map(w => w[0]?.toUpperCase() || '').join('') || '?';
@@ -504,16 +526,6 @@ function avatarTint(title){
   const t = tones[h % tones.length];
   return `background:linear-gradient(135deg, color-mix(in srgb, var(--accent) ${t}%, var(--bg2)), color-mix(in srgb, var(--accent2) ${t}%, var(--bg2)));`;
 }
-
-const overviewEl = document.getElementById('overview');
-const addRowEl = document.getElementById('add-row');
-const tabsEl = document.getElementById('tabs');
-const filesEl = document.getElementById('files');
-const titleEl = document.getElementById('panel-title');
-const subEl = document.getElementById('panel-sub');
-const searchEl = document.getElementById('search');
-let sortMode = 'recent';
-let modalCategoryValue = null;
 
 function toggleDropdown(id){
   const dd = document.getElementById(id);
@@ -531,37 +543,45 @@ function setDropdown(id, options, selectedValue, onSelect){
   const panel = dd.querySelector('.dd-panel');
   const current = options.find(o => o.value === selectedValue);
   label.textContent = current ? current.text : (options[0] ? options[0].text : '');
-  panel.innerHTML = options.map((o,i) => `<button type="button" class="dd-option ${o.value===selectedValue?'selected':''}" data-i="${i}">${o.text}</button>`).join('');
+  panel.innerHTML = options.map((o,i) => `<button type="button" class="dd-option ${o.value===selectedValue?'selected':''}" data-i="${i}">${esc(o.text)}</button>`).join('');
   [...panel.children].forEach((btn,i)=>{
     btn.onclick = ()=>{ closeAllDropdowns(); onSelect(options[i].value); };
   });
 }
-const overlayEl = document.getElementById('overlay');
 
 function categories(){ return [...new Set(entries.map(e=>e.category))].sort((a,b)=>a.localeCompare(b)); }
 
 function entryCard(e){
   const metaParts = [];
   if(e.lines != null) metaParts.push(formatLines(e.lines)+" lignes");
-  if(e.sizeBytes != null) metaParts.push(formatSize(e.sizeBytes)+" ("+formatGB(e.sizeBytes)+")");
+  if(e.sizeBytes != null) metaParts.push(formatSize(Number(e.sizeBytes))+" ("+formatGB(Number(e.sizeBytes))+")");
   const meta = metaParts.length ? metaParts.join(' · ') : 'Lignes / taille non renseignées';
+  const url = safeUrl(e.downloadUrl);
   return `
     <div class="file-row" id="entry-${e.id}">
       <div class="file-left">
-        <div class="avatar" style="${avatarTint(e.title)}">${initials(e.title)}</div>
+        <div class="avatar" style="${avatarTint(e.title)}">${esc(initials(e.title))}</div>
         <div style="min-width:0">
-          <div class="file-name">${active==='Toutes' ? `<span class="badge">${e.category}</span>` : ''}${e.title}</div>
+          <div class="file-name">${active==='Toutes' ? `<span class="badge">${esc(e.category)}</span>` : ''}${esc(e.title)}</div>
           <div class="file-meta">${meta}</div>
         </div>
       </div>
       <div class="file-actions">
-        ${e.downloadUrl ? `<button class="copy" onclick="copyLink('${e.downloadUrl.replace(/'/g,"\\'")}', this)">Copier</button>` : ''}
-        ${e.downloadUrl ? `<a class="dl" href="${e.downloadUrl}" target="_blank" rel="noopener">Télécharger</a>` : ''}
-        ${canWrite() ? `<button class="del" onclick="removeEntry('${e.id}', '${e.title.replace(/'/g,"\\'")}')"><span class="icon">${DEL_ICON}</span></button>` : ''}
+        ${url ? `<button class="copy" data-copy="${esc(url)}">Copier</button>` : ''}
+        ${url ? `<a class="dl" href="${esc(url)}" target="_blank" rel="noopener">Télécharger</a>` : ''}
+        ${canWrite() ? `<button class="del" data-del="${e.id}" data-title="${esc(e.title)}"><span class="icon">${DEL_ICON}</span></button>` : ''}
       </div>
     </div>
   `;
 }
+
+// Délégation d'événements pour les boutons des cartes
+filesEl.addEventListener('click', (ev)=>{
+  const copyBtn = ev.target.closest('[data-copy]');
+  if(copyBtn){ copyLink(copyBtn.dataset.copy, copyBtn); return; }
+  const delBtn = ev.target.closest('[data-del]');
+  if(delBtn){ removeEntry(delBtn.dataset.del, delBtn.dataset.title); }
+});
 
 function toast(msg){
   const wrap = document.getElementById('toast-wrap');
@@ -573,7 +593,8 @@ function toast(msg){
 }
 
 function copyLink(url, btn){
-  navigator.clipboard?.writeText(url).then(()=>{
+  if(!navigator.clipboard){ toast("Impossible de copier automatiquement"); return; }
+  navigator.clipboard.writeText(url).then(()=>{
     const old = btn.textContent;
     btn.textContent = 'Copié !';
     setTimeout(()=>{ btn.textContent = old; }, 1500);
@@ -591,7 +612,7 @@ function renderOverview(){
   overviewEl.innerHTML = `
     <div class="stat"><div class="v">${entries.length}</div><div class="l">Base${entries.length>1?'s':''}</div></div>
     <div class="stat"><div class="v">${cats.length}</div><div class="l">Catégorie${cats.length>1?'s':''}</div></div>
-    <div class="stat"><div class="v" style="font-size:15px">${topCat}</div><div class="l">Catégorie la + fournie</div></div>
+    <div class="stat"><div class="v" style="font-size:15px">${esc(topCat)}</div><div class="l">Catégorie la + fournie</div></div>
   `;
 }
 function renderAddRow(){
@@ -622,7 +643,7 @@ function renderTabs(){
     const count = entries.filter(e=>e.category===cat).length;
     const b = document.createElement('button');
     b.className = 'tab' + (cat===active ? ' active' : '');
-    b.innerHTML = `${cat} <span class="count">${count}</span>`;
+    b.innerHTML = `${esc(cat)} <span class="count">${count}</span>`;
     b.onclick = ()=>{ active=cat; render(); };
     tabsEl.appendChild(b);
   });
@@ -636,6 +657,8 @@ function fadeSwapFiles(html){
 }
 
 function render(){
+  // si la catégorie active n'existe plus, retour à "Toutes"
+  if(active !== 'Toutes' && !categories().includes(active)) active = 'Toutes';
   renderOverview();
   renderAddRow();
   renderTabs();
@@ -662,7 +685,8 @@ function renderModalCatSelect(){
   const cats = categories();
   const options = [...cats.map(c => ({value:c, text:c})), {value:NEW_CAT, text:'+ Nouvelle catégorie'}];
   modalCategoryValue = cats.length ? cats[0] : NEW_CAT;
-  setDropdown('dd-modal-cat', options, modalCategoryValue, (val)=>{ modalCategoryValue = val; onCatSelectChange(); });
+  const rebuild = ()=> setDropdown('dd-modal-cat', options, modalCategoryValue, (val)=>{ modalCategoryValue = val; rebuild(); onCatSelectChange(); });
+  rebuild();
   onCatSelectChange();
 }
 function onCatSelectChange(){
@@ -679,7 +703,8 @@ async function submitEntry(){
   const downloadUrl = document.getElementById('f-url').value.trim();
   const linesVal = document.getElementById('f-lines').value;
   const sizeVal = document.getElementById('f-size').value;
-  if(!category || !title || !downloadUrl) return;
+  if(!category || !title || !downloadUrl){ toast("Remplis la catégorie, le nom et le lien"); return; }
+  if(!safeUrl(downloadUrl)){ toast("Le lien doit commencer par http:// ou https://"); return; }
   const data = { category, title, downloadUrl };
   if(linesVal !== '') data.lines = Number(linesVal);
   if(sizeVal !== '') data.sizeBytes = Math.round(Number(sizeVal) * 1_000_000);
@@ -701,28 +726,31 @@ async function removeEntry(id, title){
 
 searchEl.addEventListener('input', render);
 
-
 function jumpToRandom(){
   if(entries.length === 0){ toast("Aucune base à montrer pour l'instant"); return; }
   active = 'Toutes';
   searchEl.value = '';
   render();
   const pick = entries[Math.floor(Math.random() * entries.length)];
-  requestAnimationFrame(()=>{
+  setTimeout(()=>{
     const el = document.getElementById('entry-' + pick.id);
     if(el){
       el.scrollIntoView({ behavior:'smooth', block:'center' });
       el.classList.add('highlight-flash');
       setTimeout(()=> el.classList.remove('highlight-flash'), 1500);
     }
-  });
+  }, 120);
 }
 
 document.addEventListener('keydown', (e)=>{
-  if(e.key === '/' && document.activeElement !== searchEl && document.getElementById('view-db').style.display !== 'none'){
+  if(e.key === '/' && document.activeElement !== searchEl && !/INPUT|TEXTAREA/.test(document.activeElement.tagName) && document.getElementById('view-db').style.display !== 'none'){
     e.preventDefault();
     searchEl.focus();
   }
+  if(e.key === 'Enter' && !document.getElementById('login-overlay').classList.contains('hidden')){
+    attemptLogin();
+  }
+  if(e.key === 'Escape'){ closeLogin(); closeModal(); closeAllDropdowns(); }
   if(e.key === 'F10'){
     e.preventDefault();
     if(adminUnlocked){ openModal(); } else { openLogin(); }
@@ -737,7 +765,7 @@ document.addEventListener('keydown', (e)=>{
   }catch(e){ adminUnlocked = false; }
   updateAdminButtons();
   await loadEntries();
-  // Poll so additions made by other people (like your friend) show up without a manual refresh.
+  // Rafraîchit toutes les 15 s pour voir les ajouts des autres.
   pollTimer = setInterval(loadEntries, 15000);
 })();
 </script>
